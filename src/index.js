@@ -1,17 +1,14 @@
 require('dotenv').config()
+const { port } = require('./lib/config');
 
 const Koa = require('koa');
 const app = new Koa();
 
-app.use(async (ctx, next) => {
-  await next();
-  const rt = ctx.response.get('X-Response-Time');
-  console.log(`${ctx.method} ${ctx.url} - ${rt}`);
-});
+const handlers = require('./handlers');
+const controllers = require('./controllers');
 
-// response
-app.use(async ctx => {
-  ctx.body = 'Hello World';
-});
+handlers.forEach(h => app.use(h))
+app.use(controllers.routes());
+app.use(controllers.allowedMethods());
 
-app.listen(process.env.PORT)
+app.listen(port, () => console.log(`The server was started on ${port}`))
