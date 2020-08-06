@@ -5,6 +5,6 @@ const custom = require('./custom');
 
 module.exports = [
     bodyParser,
-    errors,
-    custom
+    custom,
+    errors
 ];
