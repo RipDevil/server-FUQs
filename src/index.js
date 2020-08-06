@@ -1,15 +1,19 @@
 require('dotenv').config()
-const { port } = require('./lib/config');
-
-const showBanner = require('node-banner');
 const Koa = require('koa');
-const app = new Koa();
 
+const { port, mode } = require('./lib/config');
+const showBanner = require('node-banner');
+
+const mongooseConfig = require('./lib/mongoose-config');
 const handlers = require('./handlers');
 const controllers = require('./controllers');
+
+const app = new Koa();
 
 handlers.forEach(h => app.use(h))
 app.use(controllers.routes());
 app.use(controllers.allowedMethods());
 
-app.listen(port, () => console.log(showBanner('The FUQs', `The server was started on ${port}`, 'red')));
+mongooseConfig();
+
+app.listen(port, () => console.log(mode === "development" ? `---------> Started on port ${port}` : showBanner('The FUQs', `The server was started on ${port}`, 'red')));
