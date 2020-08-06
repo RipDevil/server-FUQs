@@ -1,11 +1,11 @@
 const Router = require('koa-router');
 const router = new Router();
 
-const FUQ = require('../models/fuq');
+const Fuq = require('../models/fuq');
 
 // Get a one fuq
 router.get('/', async (ctx) => {
-  const fuqs = await FUQ.aggregate([{ $sample: { size: 1 } }]);
+  const fuqs = await Fuq.aggregate([{ $sample: { size: 1 } }]);
   ctx.status = 200;
   ctx.body = fuqs[0];
 });
@@ -14,12 +14,12 @@ router.get('/', async (ctx) => {
 router.put('/', async (ctx) => {
   const { title, text } = ctx.request.body;
 
-  const fuq = await FUQ.findOne({ title, text });
+  const fuq = await Fuq.findOne({ title, text });
   if (fuq) {
     ctx.throw(400, 'This FUQ is already exists');
   }
 
-  const newFuq = await new FUQ({ title, text }).save();
+  const newFuq = await new Fuq({ title, text }).save();
   ctx.status = 201;
   ctx.body = newFuq;
 });
@@ -28,10 +28,10 @@ router.put('/', async (ctx) => {
 router.post('/:id', async (ctx) => {
   const { id } = ctx.params;
 
-  const fuq = await FUQ.findById(id);
+  const fuq = await Fuq.findById(id);
   if (fuq) {
     const { title, text } = ctx.request.body;
-    await FUQ.updateOne({ _id: id }, { title, text });
+    await Fuq.updateOne({ _id: id }, { title, text });
     ctx.status = 201;
   } else {
     ctx.throw(404, 'FUQ has not been found');
@@ -41,7 +41,7 @@ router.post('/:id', async (ctx) => {
 // Delete a one fuq
 router.delete('/:id', async (ctx) => {
   const { id } = ctx.params;
-  await FUQ.deleteOne({ _id: id });
+  await Fuq.deleteOne({ _id: id });
   ctx.status = 202;
 });
 
