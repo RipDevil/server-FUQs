@@ -22,7 +22,8 @@
     "dotenv": "^8.2.0",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
-    "koa-router": "^9.1.0"
+    "koa-router": "^9.1.0",
+    "node-banner": "^1.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
