@@ -1,5 +1,6 @@
-require('dotenv').config()
+require('dotenv').config();
 const Koa = require('koa');
+const cors = require('@koa/cors');
 
 const { port, mode } = require('./lib/config');
 const showBanner = require('node-banner');
@@ -10,10 +11,17 @@ const controllers = require('./controllers');
 
 const app = new Koa();
 
-handlers.forEach(h => app.use(h))
+app.use(cors());
+handlers.forEach((h) => app.use(h));
 app.use(controllers.routes());
 app.use(controllers.allowedMethods());
 
 mongooseConfig();
 
-app.listen(port, () => console.log(mode === "development" ? `---------> Started on port ${port}` : showBanner('The FUQs', `The server was started on ${port}`, 'red')));
+app.listen(port, () =>
+  console.log(
+    mode === 'development'
+      ? `---------> Started on port ${port}`
+      : showBanner('The FUQs', `The server was started on ${port}`, 'red')
+  )
+);
