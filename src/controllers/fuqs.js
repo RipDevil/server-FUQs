@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const router = new Router();
 
 const Fuq = require('../models/fuq');
+router.prefix('/fuq');
 
 // Get a one fuq
 router.get('/', async (ctx) => {
@@ -44,6 +45,5 @@ router.delete('/:id', async (ctx) => {
   await Fuq.deleteOne({ _id: id });
   ctx.status = 202;
 });
-
 
 module.exports = router.routes();
