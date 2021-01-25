@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "start": "nodemon ./src/index.js"
+    "start": "nodemon ./src/index.js",
+    "test": "ava",
+    "watch:test": "ava --watch"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,14 @@
     "node-banner": "^1.4.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "ava": "^3.15.0",
+    "nodemon": "^2.0.4",
+    "nyc": "^15.1.0",
+    "supertest-koa-agent": "^0.3.2"
+  },
+  "ava": {
+    "files": [
+      "tests/**/*.js"
+    ]
   }
 }
