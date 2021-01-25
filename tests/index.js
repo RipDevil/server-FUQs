@@ -6,5 +6,5 @@ const app = agent(createApp());
 
 test('App works', async t => {
   const res = await app.get('/');
-  t.is(res.status, 400);
+  t.is(res.status, 200);
 });
