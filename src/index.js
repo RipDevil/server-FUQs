@@ -9,19 +9,27 @@ const mongooseConfig = require('./lib/mongoose-config');
 const handlers = require('./handlers');
 const controllers = require('./controllers');
 
-const app = new Koa();
+function createApp() {
+  const app = new Koa();
 
-app.use(cors());
-handlers.forEach((h) => app.use(h));
-app.use(controllers.routes());
-app.use(controllers.allowedMethods());
+  app.use(cors());
+  handlers.forEach((h) => app.use(h));
+  app.use(controllers.routes());
+  app.use(controllers.allowedMethods());
 
-mongooseConfig();
+  mongooseConfig();
 
-app.listen(port, () =>
-  console.log(
-    mode === 'development'
-      ? `---------> Started on port ${port}`
-      : showBanner('The FUQs', `The server was started on ${port}`, 'red')
-  )
-);
+  return app;
+}
+
+if (!module.parent) {
+  createApp().listen(port, () =>
+    console.log(
+      mode === 'development'
+        ? `---------> Started on port ${port}`
+        : showBanner('The FUQs', `The server was started on ${port}`, 'red')
+    )
+  );
+}
+
+module.exports = createApp;
