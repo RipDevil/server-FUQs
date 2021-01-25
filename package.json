@@ -32,9 +32,11 @@
   },
   "devDependencies": {
     "ava": "^3.15.0",
+    "mongodb-memory-server": "^6.9.3",
     "nodemon": "^2.0.4",
     "nyc": "^15.1.0",
-    "supertest-koa-agent": "^0.3.2"
+    "supertest-koa-agent": "^0.3.2",
+    "uuid": "^8.3.2"
   },
   "ava": {
     "files": [
