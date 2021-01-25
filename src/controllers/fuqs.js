@@ -4,11 +4,24 @@ const router = new Router();
 const Fuq = require('../models/fuq');
 router.prefix('/fuq');
 
-// Get a one fuq
+// Get a random one fuq
 router.get('/', async (ctx) => {
   const fuqs = await Fuq.aggregate([{ $sample: { size: 1 } }]);
   ctx.status = 200;
   ctx.body = fuqs[0];
+});
+
+// Get a one fuq
+router.get('/:id', async (ctx) => {
+  const { id } = ctx.params;
+
+  const fuq = await Fuq.findById(id);
+  if (fuq) {
+    ctx.status = 200;
+    ctx.body = fuq;
+  } else {
+    ctx.throw(404, 'FUQ has not been found');
+  }
 });
 
 // Post a one fuq
