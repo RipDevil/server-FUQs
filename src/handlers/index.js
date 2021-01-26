@@ -5,4 +5,4 @@ const errors = require('./errors');
 const catchMongooseErrors = require('./mongoose-errors');
 const custom = require('./custom');
 
-module.exports = [cors, bodyParser, auth, errors, catchMongooseErrors, custom];
+module.exports = [cors, bodyParser, /*auth,*/ errors, catchMongooseErrors, custom];

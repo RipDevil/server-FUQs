@@ -35,7 +35,7 @@ router.put('/', async (ctx) => {
 
   const fuq = await Fuq.findOne({ title, text });
   if (fuq) {
-    ctx.throw(406, 'This FUQ is already exists');
+    ctx.throw(406, 'This FUQ already exists');
   }
 
   const newFuq = await new Fuq({ title, text }).save();
