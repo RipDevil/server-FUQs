@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { mongoUri } = require('./config');
 
+// TODO: Here we can mock with `mongodb-memory-server`
+
 module.exports = () => {
   mongoose
     .connect(mongoUri, {
