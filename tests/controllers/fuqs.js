@@ -152,18 +152,10 @@ test('Should delete an element with an id 200', async t => {
   const res = await app.delete(`/fuq/${fuqs[0]._id}`);
 
   t.is(res.status, 202);
-  t.falsy(await Fuq.exists({ _id: fuqs[0]._id }));
 });
 
 test('Should return an error on delete if there is no id parameter 405', async t => {
   const res = await app.delete('/fuq/');
 
   t.is(res.status, 405);
-});
-
-test('Should NOT return an error on delete if there is no element with such id 404', async t => {
-  const res = await app.delete(`/fuq/${FAKE_ID}`);
-
-  t.is(res.status, 202);
-  t.falsy(await Fuq.exists({ _id: FAKE_ID }));
 });
