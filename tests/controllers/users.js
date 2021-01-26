@@ -12,8 +12,6 @@ const app = agent(createApp());
 
 const mongod = new MongoMemoryServer();
 
-const FAKE_ID = '123qwe123qwe';
-
 test.serial.before(async () => {
   // Making a connection with memory-server
   const uri = await mongod.getUri();
@@ -44,6 +42,10 @@ test.serial.before(async () => {
   ]);
 });
 
+test.beforeEach(t => {
+  t.context.FAKE_ID = '123qwe123qwe';
+});
+
 test('Get 200 on users request', async t => {
   const res = await app.get('/users/');
 
@@ -64,6 +66,8 @@ test('Get 200 on user request', async t => {
 });
 
 test('Get 404 when there is no such user', async t => {
+  const { FAKE_ID } = t.context;
+
   const res = await app.get(`/users/${FAKE_ID}`);
 
   t.is(res.status, 404);

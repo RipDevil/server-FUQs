@@ -11,8 +11,6 @@ const app = agent(createApp());
 
 const mongod = new MongoMemoryServer();
 
-const FAKE_ID = '123qwe123qwe';
-
 test.serial.before(async () => {
   // Making a connection with memory-server
   const uri = await mongod.getUri();
@@ -42,6 +40,10 @@ test.serial.before(async () => {
   );
 });
 
+test.beforeEach(t => {
+  t.context.FAKE_ID = '123qwe123qwe';
+})
+
 test('Should return a random element that exists in the DB 200', async t => {
   const res = await app.get('/fuq/');
 
@@ -63,6 +65,7 @@ test('Should return a single element if ID param is provided 200', async t => {
 });
 
 test('Should return an error on get precise element if an element with provided id doesn\'t exist 204', async t => {
+  const { FAKE_ID } = t.context;
   const res = await app.get(`/fuq/${FAKE_ID}`);
 
   t.is(res.status, 404);
@@ -138,6 +141,8 @@ test('Should return an error on update if there is no parameters 400', async t =
 });
 
 test('Should return an error on update if there is no element with such id 404', async t => {
+  const { FAKE_ID } = t.context;
+
   const res = await app.post(`/fuq/${FAKE_ID}`);
 
   t.is(res.status, 404);
