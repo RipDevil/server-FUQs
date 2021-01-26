@@ -13,7 +13,9 @@ function createApp() {
   const app = new Koa();
 
   app.use(cors());
+
   handlers.forEach((h) => app.use(h));
+
   app.use(controllers.routes());
   app.use(controllers.allowedMethods());
 

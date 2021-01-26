@@ -1,6 +1,6 @@
 const test = require('ava');
 const agent = require('supertest-koa-agent');
-const createApp = require('../src');
+const createApp = require('../../src');
 
 const app = agent(createApp());
 
