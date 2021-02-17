@@ -1,8 +1,10 @@
 const Router = require('koa-router');
+
 const router = new Router();
 const { hashSync } = require('bcryptjs');
 
 const User = require('../models/user');
+
 router.prefix('/users');
 
 router.get('/', async (ctx) => {

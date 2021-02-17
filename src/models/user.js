@@ -1,29 +1,30 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 const privatePaths = require('mongoose-private-paths');
 
 const userSchema = new Schema({
   login: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   _crdate: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   fuqs: {
     type: Array,
-    default: []
+    default: [],
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   deleted: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 userSchema.plugin(privatePaths);

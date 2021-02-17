@@ -1,15 +1,17 @@
 const Router = require('koa-router');
+
 const router = new Router();
 
 const Fuq = require('../models/fuq');
+
 router.prefix('/fuq');
 
 // Get a random one fuq
 router.get('/', async (ctx) => {
-  const fuqs = await Fuq.aggregate([{ $sample: { size: 1 } }]);
+  const [fuq] = await Fuq.aggregate([{ $sample: { size: 1 } }]);
 
   ctx.status = 200;
-  ctx.body = fuqs[0];
+  ctx.body = fuq;
 });
 
 // Get a one fuq

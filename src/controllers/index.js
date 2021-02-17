@@ -5,7 +5,7 @@ const fuqs = require('./fuqs');
 const users = require('./users');
 
 // default response
-router.get('/', ctx => {
+router.get('/', (ctx) => {
   ctx.body = 'ok';
 });
 

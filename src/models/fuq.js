@@ -1,38 +1,39 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 const privatePaths = require('mongoose-private-paths');
 
 const fuqSchema = new Schema({
   title: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   crdate: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   text: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   likes: {
     type: Number,
-    default: 0
+    default: 0,
   },
   influencer: {
     type: Number,
-    default: 0
+    default: 0,
   },
   _lastEditor: {
     type: String,
-    default: 'Badmin'
+    default: 'Badmin',
   },
   _pending: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 fuqSchema.plugin(privatePaths);
