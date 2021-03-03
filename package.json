@@ -1,15 +1,5 @@
 {
   "name": "server-fuqs",
-  "version": "0.0.1",
-  "description": "",
-  "scripts": {
-    "start": "nodemon ./src/index.js",
-    "test": "ava --watch",
-    "test:coverage": "nyc ava",
-    "lint": "eslint \"./src/**/*.+(js|jsx)\"",
-    "lint:fix": "eslint \"./src/**/*.+(js|jsx)\" --fix",
-    "format": "prettier --write \"src/**/*.+(js|jsx|json|css|md)\""
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RipDevil/server-FUQs.git"
@@ -23,6 +13,22 @@
   ],
   "author": "MarkAnn",
   "license": "GPL-3.0-or-later",
+  "betterScripts": {
+    "test": {
+      "command": "ava --watch",
+      "env": {
+        "SECRET": "TEST"
+      }
+    }
+  },
+  "scripts": {
+    "start": "nodemon ./src/index.js",
+    "test": "better-npm-run test",
+    "test:coverage": "nyc ava",
+    "lint": "eslint \"./src/**/*.+(js|jsx)\"",
+    "lint:fix": "eslint \"./src/**/*.+(js|jsx)\" --fix",
+    "format": "prettier --write \"src/**/*.+(js|jsx|json|css|md)\""
+  },
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "bcryptjs": "^2.4.3",
@@ -39,6 +45,7 @@
   },
   "devDependencies": {
     "ava": "^3.15.0",
+    "better-npm-run": "^0.1.1",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
@@ -52,7 +59,8 @@
   },
   "ava": {
     "files": [
-      "tests/**/*.js"
+      "tests/**/*.js",
+      "!tests/helpers/**/*.js"
     ]
   },
   "husky": {
