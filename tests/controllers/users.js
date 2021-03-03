@@ -54,7 +54,7 @@ test('Get 200 on users request', async t => {
 });
 
 test('Get 200 on user request', async t => {
-  const users = await User.aggregate([{ $sample: { size: 1 } }]);
+  const users = await User.find({ login: 'Anastasia' });
 
   t.not(users.legnth, 0);
 
@@ -105,7 +105,7 @@ test('Get 406 if user with the same login exists', async t => {
 });
 
 test('Get 202 on successfull deletion', async t => {
-  const users = await User.aggregate([{ $sample: { size: 1 } }]);
+  const users = await User.find({ login: 'Roman' });
 
   t.not(users.legnth, 0);
 
