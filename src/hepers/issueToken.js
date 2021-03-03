@@ -13,7 +13,7 @@ async function issueTokenPair(userId) {
   }).save();
 
   return {
-    token: jwt.sign({ id: userId }, secret),
+    token: jwt.sign({ id: userId }, secret, { expiresIn: '10m' }),
     refreshToken: newRefreshToken,
   };
 }

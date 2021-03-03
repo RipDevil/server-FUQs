@@ -2,7 +2,7 @@ const jwtMiddleware = require('koa-jwt');
 const config = require('../lib/config');
 
 module.exports = async (ctx, next) => {
-  if (ctx.url.match(/\/admin*/)) {
+  if (ctx.url.match(/(\/admin*|\/users*)/)) {
     await jwtMiddleware({
       secret: config.secret
     })(ctx, next);
