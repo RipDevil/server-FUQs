@@ -94,7 +94,7 @@ test('Get 400 when no params are presented', async t => {
 });
 
 test('Get 406 if user with the same login exists', async t => {
-  const users = await User.aggregate([{ $sample: { size: 1 } }]);
+  const users = await User.find({ login: 'Jeremy' });
 
   t.not(users.legnth, 0);
 
