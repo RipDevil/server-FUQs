@@ -53,7 +53,7 @@ test('Should return a random element that exists in the DB 200', async t => {
 });
 
 test('Should return a single element if ID param is provided 200', async t => {
-  const fuqs = await Fuq.aggregate([{ $sample: { size: 1 } }]);
+  const fuqs = await Fuq.find({ title: '1 Title' });
 
   t.not(fuqs.legnth, 0);
 
@@ -86,7 +86,7 @@ test('Should create an element in the DB 201', async t => {
 });
 
 test('Should return an error on create if an element with the same params is presented in the DB 406', async t => {
-  const fuqs = await Fuq.aggregate([{ $sample: { size: 1 } }]);
+  const fuqs = await Fuq.find({ title: '1 Title' });
 
   t.not(fuqs.legnth, 0);
 
@@ -105,7 +105,7 @@ test('Should return an error on create if there are no req params 400', async t 
 });
 
 test('Should update an element in the DB with presented params 200', async t => {
-  const fuqs = await Fuq.aggregate([{ $sample: { size: 1 } }]);
+  const fuqs = await Fuq.find({ title: '2 Title' });
 
   t.not(fuqs.legnth, 0);
 
@@ -130,7 +130,7 @@ test('Should return an error on update if there is no id parameter 405', async t
 });
 
 test('Should return an error on update if there is no parameters 400', async t => {
-  const fuqs = await Fuq.aggregate([{ $sample: { size: 1 } }]);
+  const fuqs = await Fuq.find({ title: '3 Title' });
 
   t.not(fuqs.legnth, 0);
 
@@ -150,7 +150,7 @@ test('Should return an error on update if there is no element with such id 404',
 });
 
 test('Should delete an element with an id 200', async t => {
-  const fuqs = await Fuq.aggregate([{ $sample: { size: 1 } }]);
+  const fuqs = await Fuq.find({ title: '4 Title' });
 
   t.not(fuqs.legnth, 0);
 
