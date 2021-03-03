@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "start": "nodemon ./src/index.js",
-    "test": "nyc ava",
-    "watch:test": "ava --watch",
+    "test": "ava --watch",
+    "test:coverage": "nyc ava",
     "lint": "eslint \"./src/**/*.+(js|jsx)\"",
     "lint:fix": "eslint \"./src/**/*.+(js|jsx)\" --fix",
     "format": "prettier --write \"src/**/*.+(js|jsx|json|css|md)\""
