@@ -1,7 +1,10 @@
 const Router = require('koa-router');
 
+const jwtMiddleware = require('koa-jwt');
+
 const router = new Router();
 
+const config = require('../lib/config');
 const Fuq = require('../models/fuq');
 
 router.prefix('/fuq');
@@ -28,7 +31,7 @@ router.get('/:id', async (ctx) => {
 });
 
 // Post a one fuq
-router.put('/', async (ctx) => {
+router.put('/', jwtMiddleware({ secret: config.secret }), async (ctx) => {
   if (!ctx.request.body.title || !ctx.request.body.text) {
     ctx.throw(400, 'Invalid parameters');
   }
@@ -46,7 +49,7 @@ router.put('/', async (ctx) => {
 });
 
 // Change a one fuq
-router.post('/:id', async (ctx) => {
+router.post('/:id', jwtMiddleware({ secret: config.secret }), async (ctx) => {
   const { id } = ctx.params;
 
   const fuq = await Fuq.findById(id);
@@ -65,7 +68,7 @@ router.post('/:id', async (ctx) => {
 });
 
 // Delete a one fuq
-router.delete('/:id', async (ctx) => {
+router.delete('/:id', jwtMiddleware({ secret: config.secret }), async (ctx) => {
   const { id } = ctx.params;
   await Fuq.deleteOne({ _id: id });
   ctx.status = 202;
