@@ -1,5 +1,6 @@
 require('dotenv').config();
 const Koa = require('koa');
+const koaHelmet = require('koa-helmet');
 
 const showBanner = require('./hepers/showBanner');
 const { port } = require('./lib/config');
@@ -10,6 +11,8 @@ const controllers = require('./controllers');
 
 function createApp() {
   const app = new Koa();
+
+  app.use(koaHelmet());
 
   handlers.forEach((h) => app.use(h));
 
