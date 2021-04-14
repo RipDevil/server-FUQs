@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+
+  fuq-backend:
+    container_name: fuq-backend
+    depends_on:
+      - fuq-mongodb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '1338:${PORT:-8080}'
+
+  fuq-mongodb:
+    image: mongo
+    container_name: fuq-mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=fuqdb
+      - MONGO_INITDB_ROOT_USERNAME=${DATABASE_USR:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${DATABASE_SECRET:-admin}
+    volumes:
+      - ./docker/mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
