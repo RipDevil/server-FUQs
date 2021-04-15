@@ -8,7 +8,7 @@ const User = require('../models/user');
 router.prefix('/users');
 
 router.get('/', async (ctx) => {
-  const users = await User.find({ deleted: false });
+  const users = await User.find({ deleted: false }, { password: false });
 
   ctx.status = 200;
   ctx.body = users;
@@ -16,9 +16,11 @@ router.get('/', async (ctx) => {
 
 router.get('/:id', async (ctx) => {
   const { id } = ctx.params;
-  const user = await User.findOne({ _id: id, deleted: false });
+  const user = await User.findOne({ _id: id, deleted: false }, { password: false });
 
   if (user) {
+    delete user.password;
+
     ctx.status = 200;
     ctx.body = user;
   } else {
@@ -31,7 +33,7 @@ router.put('/', async (ctx) => {
     ctx.throw(400);
   } else {
     const { login, password } = ctx.request.body;
-    const user = await User.findOne({ login });
+    const user = await User.findOne({ login }, { password: false });
 
     if (user) {
       ctx.throw(406, 'This user already exists');
