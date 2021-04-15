@@ -48,14 +48,14 @@ test.beforeEach((t) => {
   t.context.FAKE_ID = '123qwe123qwe';
 });
 
-test('Get 200 on users request', async (t) => {
+test.serial('Get 200 on users request', async (t) => {
   const res = await app.get('/users/').set('Authorization', authLine);
 
   t.is(res.status, 200);
   t.assert(res.body);
 });
 
-test('Get 200 on user request', async (t) => {
+test.serial('Get 200 on user request', async (t) => {
   const users = await User.find({ login: 'Anastasia' });
 
   t.not(users.legnth, 0);
@@ -67,7 +67,7 @@ test('Get 200 on user request', async (t) => {
   t.truthy(User.findOne(res.body));
 });
 
-test('Get 404 when there is no such user', async (t) => {
+test.serial('Get 404 when there is no such user', async (t) => {
   const { FAKE_ID } = t.context;
 
   const res = await app.get(`/users/${FAKE_ID}`).set('Authorization', authLine);
@@ -76,7 +76,7 @@ test('Get 404 when there is no such user', async (t) => {
   t.assert(res.body.error.message);
 });
 
-test('Get 200 and added user on add user', async (t) => {
+test.serial('Get 200 and added user on add user', async (t) => {
   const NEW_USER = {
     login: 'Vasya',
     password: 'Zabubenskiy',
@@ -89,13 +89,13 @@ test('Get 200 and added user on add user', async (t) => {
   t.truthy(User.findOne({ login: NEW_USER.login, password: hashSync(NEW_USER.password) }));
 });
 
-test('Get 400 when no params are presented', async (t) => {
+test.serial('Get 400 when no params are presented', async (t) => {
   const res = await app.put('/users/').set('Authorization', authLine);
 
   t.is(res.status, 400);
 });
 
-test('Get 406 if user with the same login exists', async (t) => {
+test.serial('Get 406 if user with the same login exists', async (t) => {
   const users = await User.find({ login: 'Jeremy' });
 
   t.not(users.legnth, 0);
@@ -109,7 +109,7 @@ test('Get 406 if user with the same login exists', async (t) => {
   t.assert(res.body.error.message);
 });
 
-test('Get 202 on successfull deletion', async (t) => {
+test.serial('Get 202 on successfull deletion', async (t) => {
   const users = await User.find({ login: 'Roman' });
 
   t.not(users.legnth, 0);
@@ -119,8 +119,13 @@ test('Get 202 on successfull deletion', async (t) => {
   t.is(res.status, 202);
 });
 
-test('Get 405 when there is no id parameter', async (t) => {
+test.serial('Get 405 when there is no id parameter', async (t) => {
   const res = await app.delete('/users/').set('Authorization', authLine);
 
   t.is(res.status, 405);
+});
+
+test.after.always(async (t) => {
+  mongoose.disconnect()
+  mongod.stop()
 });

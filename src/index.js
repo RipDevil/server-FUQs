@@ -19,12 +19,11 @@ function createApp() {
   app.use(controllers.routes());
   app.use(controllers.allowedMethods());
 
-  mongooseConfig(); // connect to DB
-
   return app;
 }
 
 if (!module.parent) {
+  mongooseConfig()
   createApp().listen(port, showBanner);
 }
 

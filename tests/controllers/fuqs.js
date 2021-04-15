@@ -49,7 +49,7 @@ test.beforeEach((t) => {
   t.context.FAKE_ID = '123qwe123qwe';
 });
 
-test('Should return a random element that exists in the DB 200', async (t) => {
+test.serial('Should return a random element that exists in the DB 200', async (t) => {
   const res = await app.get('/fuq/');
 
   t.is(res.status, 200);
@@ -57,7 +57,7 @@ test('Should return a random element that exists in the DB 200', async (t) => {
   t.truthy(Fuq.exists({ title: res.body.title }));
 });
 
-test('Should return a single element if ID param is provided 200', async (t) => {
+test.serial('Should return a single element if ID param is provided 200', async (t) => {
   const fuqs = await Fuq.find({ title: '1 Title' });
 
   t.not(fuqs.legnth, 0);
@@ -69,7 +69,7 @@ test('Should return a single element if ID param is provided 200', async (t) => 
   t.truthy(Fuq.exists({ _id: res.body._id }));
 });
 
-test("Should return an error on get precise element if an element with provided id doesn't exist 204", async (t) => {
+test.serial("Should return an error on get precise element if an element with provided id doesn't exist 204", async (t) => {
   const { FAKE_ID } = t.context;
   const res = await app.get(`/fuq/${FAKE_ID}`);
 
@@ -77,7 +77,7 @@ test("Should return an error on get precise element if an element with provided 
   t.assert(res.body.error.message);
 });
 
-test('Should create an element in the DB 201', async (t) => {
+test.serial('Should create an element in the DB 201', async (t) => {
   const FAKE_ELEMENT = {
     title: 'TEST_TITLE',
     text: 'TEST_TEXT',
@@ -90,7 +90,7 @@ test('Should create an element in the DB 201', async (t) => {
   t.truthy(Fuq.exists(FAKE_ELEMENT));
 });
 
-test('Should return an error on create if an element with the same params is presented in the DB 406', async (t) => {
+test.serial('Should return an error on create if an element with the same params is presented in the DB 406', async (t) => {
   const fuqs = await Fuq.find({ title: '1 Title' });
 
   t.not(fuqs.legnth, 0);
@@ -105,14 +105,14 @@ test('Should return an error on create if an element with the same params is pre
   t.assert(res.body.error.message);
 });
 
-test('Should return an error on create if there are no req params 400', async (t) => {
+test.serial('Should return an error on create if there are no req params 400', async (t) => {
   const res = await app.put(`/fuq/`).set('Authorization', authLine);
 
   t.is(res.status, 400);
   t.assert(res.body.error.message);
 });
 
-test('Should update an element in the DB with presented params 200', async (t) => {
+test.serial('Should update an element in the DB with presented params 200', async (t) => {
   const fuqs = await Fuq.find({ title: '2 Title' });
 
   t.not(fuqs.legnth, 0);
@@ -128,7 +128,7 @@ test('Should update an element in the DB with presented params 200', async (t) =
   t.truthy(await Fuq.exists(FAKE_ELEMENT));
 });
 
-test('Should return an error on update if there is no id parameter 405', async (t) => {
+test.serial('Should return an error on update if there is no id parameter 405', async (t) => {
   const res = await app
     .post('/fuq/')
     .send({
@@ -140,7 +140,7 @@ test('Should return an error on update if there is no id parameter 405', async (
   t.is(res.status, 405);
 });
 
-test('Should return an error on update if there is no parameters 400', async (t) => {
+test.serial('Should return an error on update if there is no parameters 400', async (t) => {
   const fuqs = await Fuq.find({ title: '3 Title' });
 
   t.not(fuqs.legnth, 0);
@@ -151,7 +151,7 @@ test('Should return an error on update if there is no parameters 400', async (t)
   t.assert(res.body.error.message);
 });
 
-test('Should return an error on update if there is no element with such id 404', async (t) => {
+test.serial('Should return an error on update if there is no element with such id 404', async (t) => {
   const { FAKE_ID } = t.context;
 
   const res = await app.post(`/fuq/${FAKE_ID}`).set('Authorization', authLine);
@@ -160,7 +160,7 @@ test('Should return an error on update if there is no element with such id 404',
   t.assert(res.body.error.message);
 });
 
-test('Should delete an element with an id 200', async (t) => {
+test.serial('Should delete an element with an id 200', async (t) => {
   const fuqs = await Fuq.find({ title: '4 Title' });
 
   t.not(fuqs.legnth, 0);
@@ -170,8 +170,13 @@ test('Should delete an element with an id 200', async (t) => {
   t.is(res.status, 202);
 });
 
-test('Should return an error on delete if there is no id parameter 405', async (t) => {
+test.serial('Should return an error on delete if there is no id parameter 405', async (t) => {
   const res = await app.delete('/fuq/').set('Authorization', authLine);
 
   t.is(res.status, 405);
+});
+
+test.after.always(async (t) => {
+  mongoose.disconnect()
+  mongod.stop()
 });

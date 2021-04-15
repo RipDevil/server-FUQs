@@ -65,7 +65,7 @@ test.serial.before(async () => {
   ]);
 });
 
-test('User can successfully login', async (t) => {
+test.serial('User can successfully login', async (t) => {
   const res = await app.post('/auth/login').send({
     login: '1',
     password: '1',
@@ -84,7 +84,7 @@ test('User can successfully login', async (t) => {
   t.truthy(typeof refreshRes.body.refreshToken === 'string');
 });
 
-test('User gets 403 on invalid credentials', async (t) => {
+test.serial('User gets 403 on invalid credentials', async (t) => {
   const res = await app.post('/auth/login').send({
     login: 'INVALID',
     password: 'INVALID',
@@ -93,14 +93,14 @@ test('User gets 403 on invalid credentials', async (t) => {
   t.is(res.status, 403);
 });
 
-test('User receives 401 on expired token', async (t) => {
+test.serial('User receives 401 on expired token', async (t) => {
   const expiredToken = await issueToken({ id: 1 }, { expiresIn: '1ms' });
   const res = await app.get('/admin').set('Authorization', `Bearer ${expiredToken}`);
 
   t.is(res.status, 401);
 });
 
-test('User can get new access token using refresh token', async (t) => {
+test.serial('User can get new access token using refresh token', async (t) => {
   const res = await app.post('/auth/refresh').send({
     refreshToken: 'REFRESH_TOKEN_1',
   });
@@ -110,7 +110,7 @@ test('User can get new access token using refresh token', async (t) => {
   t.truthy(typeof res.body.refreshToken === 'string');
 });
 
-test('User get 404 on invalid refresh token', async (t) => {
+test.serial('User get 404 on invalid refresh token', async (t) => {
   const res = await app.post('/auth/refresh').send({
     refreshToken: 'INVALID',
   });
@@ -118,7 +118,7 @@ test('User get 404 on invalid refresh token', async (t) => {
   t.is(res.status, 404);
 });
 
-test('User can use refresh token only once', async (t) => {
+test.serial('User can use refresh token only once', async (t) => {
   const res = await app.post('/auth/refresh').send({
     refreshToken: 'REFRESH_TOKEN_2',
   });
@@ -134,7 +134,7 @@ test('User can use refresh token only once', async (t) => {
   t.is(usedTokenRes.status, 404);
 });
 
-test('Refresh tokens become invalid on logout', async (t) => {
+test.serial('Refresh tokens become invalid on logout', async (t) => {
   const token = await issueToken({ id: 7 });
   await app.post('/auth/logout').set('Authorization', `Bearer ${token}`);
 
@@ -149,7 +149,7 @@ test('Refresh tokens become invalid on logout', async (t) => {
   t.is(refreshTokens.length, 0);
 });
 
-test('Multiple refresh tokens are valid', async (t) => {
+test.serial('Multiple refresh tokens are valid', async (t) => {
   const firstLogin = await app.post('/auth/login').send({
     login: '5',
     password: '5',
@@ -178,4 +178,9 @@ test('Multiple refresh tokens are valid', async (t) => {
   t.is(secondLoginRefresh.status, 200);
   t.truthy(typeof secondLoginRefresh.body.token === 'string');
   t.truthy(typeof secondLoginRefresh.body.refreshToken === 'string');
+});
+
+test.after.always(async (t) => {
+  mongoose.disconnect()
+  mongod.stop()
 });
