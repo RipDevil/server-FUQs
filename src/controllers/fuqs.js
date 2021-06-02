@@ -31,7 +31,7 @@ router.get('/:id', async (ctx) => {
 });
 
 // Post a one fuq
-router.put('/', jwtMiddleware({ secret: config.secret }), async (ctx) => {
+router.put('/'/*, jwtMiddleware({ secret: config.secret })*/, async (ctx) => {
   if (!ctx.request.body.title || !ctx.request.body.text) {
     ctx.throw(400, 'Invalid parameters');
   }
